@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://expense-splitter-production-800f.up.railway.app/api',
+  baseURL: 'https://expense-splitter-production-800f.up.railway.app/api',
 });
 
 API.interceptors.request.use((req) => {
