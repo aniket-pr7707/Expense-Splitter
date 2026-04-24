@@ -6,9 +6,14 @@ Live Demo: expense-splitter-pi-five.vercel.app
 
 ----------------------------------------------------------------------------
 ##📸Screenshots 
+| Login Page 
+![Login](Screenshots\Login.png)
 
-Login Page | Dashboard | Group Detail 
+| Dashboard 
+![Dashboard](Screenshots\Dashboard.png)
 
+| Group Detail 
+![Group Detail](Screenshots\Groupdetail.png)
 ----------------------------------------------------------------------------
 
 ##Features User ✨
