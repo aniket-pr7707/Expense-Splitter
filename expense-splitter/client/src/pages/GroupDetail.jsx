@@ -9,6 +9,8 @@ export default function GroupDetail() {
   const [balances, setBalances] = useState({});
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
+  const [memberEmail, setMemberEmail] = useState('');
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,6 +48,29 @@ export default function GroupDetail() {
     }
   };
 
+  const addMemberByEmail = async () => {
+    if (!memberEmail.trim()) return;
+    try {
+      await API.post(`/groups/${id}/members/email`, { email: memberEmail });
+      setMemberEmail('');
+      setMessage('Member added successfully! ✅');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) {
+      setMessage(err.response?.data?.message || 'User not found');
+      setTimeout(() => setMessage(''), 3000);
+    }
+  };
+
+  const deleteGroup = async () => {
+    if (!window.confirm('Are you sure you want to delete this group?')) return;
+    try {
+      await API.delete(`/groups/${id}`);
+      navigate('/dashboard');
+    } catch (err) {
+      setMessage(err.response?.data?.message || 'Error deleting group');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <nav className="bg-white shadow px-6 py-4 flex justify-between items-center">
@@ -56,9 +81,40 @@ export default function GroupDetail() {
           ← Back
         </button>
         <h1 className="text-xl font-bold text-blue-600">💸 Expense Splitter</h1>
+        <button
+          onClick={deleteGroup}
+          className="text-sm bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
+        >
+          Delete Group
+        </button>
       </nav>
 
       <div className="max-w-2xl mx-auto mt-8 px-4 space-y-6">
+
+        {/* Add Member */}
+        <div className="bg-white rounded-xl shadow p-6">
+          <h2 className="text-lg font-semibold mb-4">Add Member by Email</h2>
+          {message && (
+            <p className={`text-sm mb-3 ${message.includes('✅') ? 'text-green-600' : 'text-red-500'}`}>
+              {message}
+            </p>
+          )}
+          <div className="flex gap-2">
+            <input
+              type="email"
+              placeholder="Enter member's email"
+              className="flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={memberEmail}
+              onChange={(e) => setMemberEmail(e.target.value)}
+            />
+            <button
+              onClick={addMemberByEmail}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 font-semibold"
+            >
+              Add
+            </button>
+          </div>
+        </div>
 
         {/* Add Expense */}
         <div className="bg-white rounded-xl shadow p-6">
